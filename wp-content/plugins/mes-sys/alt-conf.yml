@@ -1,0 +1,8 @@
+db:
+  prefix: alt
+
+class:
+  folder: models
+  classes:
+    - User
+    - Comment

@@ -1,0 +1,16 @@
+{
+    "name": "alrorm/vendor",
+    "description": "Orm plugin for wp",
+    "type": "composer-plugin",
+    "require": {
+        "symfony/yaml": "^3.2",
+        "doctrine/annotations": "^1.4"
+    },
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Vasyl Pastushenko",
+            "email": "vasyl007771@gmail.com"
+        }
+    ]
+}
