@@ -11,7 +11,8 @@ namespace AltORM\Db\ColumnFactory;
 
 use AltORM\Db\Validator;
 
-class AbstractColumn {
+class AbstractColumn
+{
 
 	const COLUMN_TYPE_VARCHAR = 'VARCHAR';
 	const COLUMN_TYPE_TEXT = 'TEXT';

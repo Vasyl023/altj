@@ -3,6 +3,8 @@ db:
 
 class:
   folder: models
+  repos:
+    - UserRepository
   classes:
     - User
     - Comment

@@ -38,7 +38,4 @@ class User extends AbstractDbModel
 	function __construct() {
 		parent::_construct('mes-sys/user');
 	}
-
-
-
 }

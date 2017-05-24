@@ -9,5 +9,8 @@ namespace AltORM\Core\Resource;
 
 class ResourceDb
 {
+	function __construct()
+	{
 
+	}
 }
