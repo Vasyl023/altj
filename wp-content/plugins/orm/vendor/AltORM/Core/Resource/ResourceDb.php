@@ -7,10 +7,28 @@
  */
 namespace AltORM\Core\Resource;
 
+use AltORM\AltORM;
+
 class ResourceDb
 {
-	function __construct()
-	{
 
+	/** @var string  */
+	protected $entityCode = null;
+
+	function __construct($entityCode)
+	{
+		$this->entityCode = $entityCode;
+
+	}
+
+	protected function getTable()
+	{
+		$configs = $this->getConfig($this->entityCode);
+		return $configs['table'];
+	}
+
+	protected function getConfig($name)
+	{
+		return AltORM::getConfig()->getConfigs($name);
 	}
 }

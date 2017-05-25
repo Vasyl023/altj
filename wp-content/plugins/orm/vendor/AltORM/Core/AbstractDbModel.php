@@ -14,11 +14,16 @@ use AltORM\Core\Model\AltObject;
 abstract class AbstractDbModel extends AltObject {
 
 
+	/** @var  ResourceDb */
+	private $_resource;
+
 	/**
 	 * AbstractModel constructor.
+	 *
+	 * @param $name
 	 */
-	function _construct($name = '') {
-
+	function _construct($name) {
+		$this->_resource = new ResourceDb($name);
 	}
 
 	/**
@@ -47,6 +52,6 @@ abstract class AbstractDbModel extends AltObject {
 	 */
 	protected function getResources()
 	{
-		return;
+		return $this->getResources();
 	}
 }
