@@ -52,6 +52,6 @@ abstract class AbstractDbModel extends AltObject {
 	 */
 	protected function getResources()
 	{
-		return $this->getResources();
+		return $this->_resource;
 	}
 }

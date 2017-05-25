@@ -14,6 +14,10 @@ use AltORM\Core\AbstractDbModel;
 class AbstractRepository implements RepositoryInterface
 {
 
+	function __construct() {
+
+	}
+
 	/**
 	 * @param $query
 	 * @return Collection

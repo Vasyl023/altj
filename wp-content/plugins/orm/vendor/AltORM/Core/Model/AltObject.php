@@ -8,24 +8,54 @@
 
 namespace AltORM\Core\Model;
 
+/**
+ * Class AltObject
+ * @package AltORM\Core\Model
+ */
 class AltObject
 {
 
 	/** @var array  */
 	private $_data = array();
 
-
-	function __get( $name ) {
+	/**
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	public function __get( $name ) {
 		if(isset($this->_data[$name]))
 			return $this->_data[$name];
 	}
 
-
-	function __set( $name, $value ) {
-
+	/**
+	 * @param $name
+	 * @param $value
+	 */
+	public function __set( $name, $value ) {
 		$this->_data[$name] = $value;
-
 	}
 
+	/**
+	 * @param $key
+	 *
+	 * @return $this
+	 */
+	public function getData($key)
+	{
+		if(!empty($key)){
+			$this->_data[$key];
+		}
 
+		return $this;
+	}
+
+	public function setData($key, $data)
+	{
+		if(!empty($data) && !empty($key)){
+			$this->_data[$key] = $data;
+		}
+
+		return $this;
+	}
 }

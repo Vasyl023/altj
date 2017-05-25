@@ -5,6 +5,7 @@
  * Date: 4/26/17
  * Time: 9:05 PM
  */
+
 use AltORM\Core\Annotations\Table;
 use AltORM\Core\Annotations\Column;
 use AltORM\Core\AbstractDbModel;
@@ -14,6 +15,7 @@ use AltORM\Core\AbstractDbModel;
  */
 class User extends AbstractDbModel
 {
+
 	/** @Column(name="int", primary=true, unique=true, nullable=false, length=11) */
 	public $id;
 
@@ -38,4 +40,5 @@ class User extends AbstractDbModel
 	function __construct() {
 		parent::_construct('mes-sys/user');
 	}
+
 }
