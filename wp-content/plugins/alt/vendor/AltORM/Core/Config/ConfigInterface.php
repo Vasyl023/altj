@@ -9,7 +9,35 @@
 namespace AltORM\Core\Config;
 
 interface ConfigInterface {
+	/**
+	 * @param string $name
+	 *
+	 * @return mixed
+	 */
 	public function getConfigs( $name = '' );
+
+	/**
+	 * @param $array
+	 * @param string $name
+	 *
+	 * @return mixed
+	 */
 	public function addConfig($array, $name = '');
+
+	/**
+	 * @param string $name
+	 *
+	 * @return mixed
+	 */
 	public function removeConfig( $name = '');
+
+	/**
+	 * @return mixed
+	 */
+	public function cleanCache();
+
+	/**
+	 * @return mixed
+	 */
+	public function saveCache();
 }

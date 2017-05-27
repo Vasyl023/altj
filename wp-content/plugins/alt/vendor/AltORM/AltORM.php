@@ -54,7 +54,6 @@ class AltORM {
 
 	/**
 	 * Run all app migration.
-	 *
 	 */
 	private function _runMigration()
 	{

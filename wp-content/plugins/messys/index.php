@@ -21,6 +21,3 @@ $user = $obj->get(3);
 
 //$obj->save($user);
 
-print_r($user);
-
-die();

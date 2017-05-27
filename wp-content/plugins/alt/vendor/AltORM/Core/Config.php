@@ -23,6 +23,8 @@ class Config implements ConfigInterface
 
 	const WP_CONTENT_PLUGIN_DIR = 'plugins';
 
+	const WP_OPTION_NAME = 'alt-orm-cache';
+
 	const ORM_CLASS_ENDING = '.php';
 
 	const ORM_MODEL_PATH = 'Models';
@@ -48,12 +50,34 @@ class Config implements ConfigInterface
 	 */
 	function __construct() {
 
-		$this->_prepareConfigs(true);
+		if(get_option(self::WP_OPTION_NAME) == ''){
+			$this->_prepareConfigs(true);
+		}else{
+			$this->_configs = unserialize(get_option(self::WP_OPTION_NAME));
+		}
 
 	}
 
 	/**
+	 * Save data to cache
+	 */
+	public function saveCache()
+	{
+		add_option(self::WP_OPTION_NAME, serialize($this->getConfigs()));
+	}
+
+	/**
+	 * Save data to cache
+	 */
+	public function cleanCache()
+	{
+		add_option(self::WP_OPTION_NAME, '');
+	}
+
+	/**
 	 * Here we get all folders of plugin with config file
+	 * @param $isForced boolean
+	 *
 	 */
 	private function _prepareConfigs($isForced = false)
 	{
@@ -63,6 +87,7 @@ class Config implements ConfigInterface
 
 			/** @var array $dirs */
 			$dirs = array();
+			$helper = new Core();
 
 			//parse directories
 			$root_dir = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . self::WP_CONTENT_PLUGIN_DIR;
@@ -83,7 +108,6 @@ class Config implements ConfigInterface
 
 			}
 
-			$helper = new Core();
 			// check files
 			// and load configs
 			foreach ( $dirs as $dir ) {
@@ -123,7 +147,12 @@ class Config implements ConfigInterface
 				}
 			}
 			$this->_isFoldersParsed = true;
+
+			// after let`s save a cache
+			$this->saveCache();
 		}
+
+
 	}
 
 	/**
@@ -141,9 +170,6 @@ class Config implements ConfigInterface
 			throw new \Exception('No classes type provided');
 		}
 
-//		if(!isset($yml['class']['folder'])){
-//			throw new \Exception('No models type provided');
-//		}
 	}
 
 	/**
