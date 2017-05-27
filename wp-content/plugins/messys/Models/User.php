@@ -22,20 +22,23 @@ class User extends AbstractDbModel
 	/** @Column(name="int", primary=true, unique=true, nullable=false, length=11) */
 	public $id;
 
-	/** @Column(name="varchar", nullable=true) */
-	protected $last;
+	/** @Column(name="varchar", length=255, nullable=false, default="User") */
+	protected $name;
 
 	/** @Column(name="text", nullable=true) */
 	protected $comment;
 
-	/** @Column(name="int", nullable=false, default="10") */
+	/** @Column(name="float", nullable=false, default="10") */
 	protected $age;
 
-	/** @Column(name="decimal", nullable=false, default="10.1") */
+	/** @Column(name="float", nullable=false, default="10.1") */
 	protected $points;
 
 	/** @Column(name="datetime", nullable=false) */
 	protected $created_at;
+
+	/** @Column(name="int", nullable=false, default="0") */
+	protected $posts;
 
 	/**
 	 * User constructor.

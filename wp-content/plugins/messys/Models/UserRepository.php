@@ -21,14 +21,6 @@ class UserRepository extends \AltORM\Repository\AbstractRepository
 	}
 
 	/**
-	 * @param \AltORM\Core\Model\AltObject $obj
-	 */
-	public function save( \AltORM\Core\Model\AltObject $obj )
-	{
-		// TODO: Implement save() method.
-	}
-
-	/**
 	 * @param $query
 	 *
 	 * @return array|void

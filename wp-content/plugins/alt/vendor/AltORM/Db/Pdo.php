@@ -15,7 +15,7 @@ use AltORM\Db\ColumnFactory\AbstractColumn;
 
 /**
  * Class Pdo
- * Here we manage relation to wpdb, Adapter pattern
+ * Here we manage relation to wpdb, Adapter pattern for mysql
  * @package AltORM\Db
  */
 class Pdo {
@@ -23,8 +23,6 @@ class Pdo {
 
 	/** @var  Adapter */
 	protected $_adapter;
-
-
 
 	/**
 	 * Pdo constructor.
@@ -70,6 +68,7 @@ class Pdo {
 
 
 	/**
+	 * Prepare datas
 	 * @param $columns
 	 * @return AbstractColumn[]
 	 */
@@ -107,7 +106,6 @@ class Pdo {
 	 */
 	public function createTable($name, $columns)
 	{
-
 		if($this->getWpdb()->query(
 			$this->getAdapter()->checkIfTableExist($name)
 		) ){
@@ -115,19 +113,14 @@ class Pdo {
 			// Skip working with table for now
 			return;
 		}
-
 		$cols = $this->prepareColumns($columns);
-
 		$sql = $this->getAdapter()->createTable($name, $cols);
-
 		$result = $this->getWpdb()->query($sql);
-
 
 		if(!$result)
 		{
 			throw new \Exception(sprintf('Something went wrong with Table %s creation. Error: %s', $name, $this->getWpdb()->last_error));
 		}
-
 	}
 
 	/**
@@ -138,46 +131,95 @@ class Pdo {
 	 */
 	protected function startColumnMigration($tableName, $columns = array())
 	{
-
 		$sql = $this->getAdapter()->getTableColumns($tableName);
+		// return data from existing db
 		$tableColumns = $this->getWpdb()->get_results($sql,ARRAY_A);
 
 		// prepare columns
 		$configColumns = $this->prepareColumns($columns);
 
-		foreach ( $tableColumns as $tableColumn ) {
+		$existing_columns = $tableColumns;
 
-			foreach ($configColumns as $configColumn) {
-				if(!$this->isCompareColumns($tableColumn, $configColumn))
-				{
+		foreach ($configColumns as $configColumn) {
 
-				}
+			// run comparing columns, and male change
+			$key = $this->findTableColumn($configColumn->getColumnName(), $tableColumns);
+
+			if(is_null($key)){
+				$sql = $this->getAdapter()
+				            ->alterAddColumnToTable(
+				            	$tableName,
+								$configColumn->alterTable()
+							);
+
+				$this->getWpdb()->query($sql);
+			}elseif(!$this->isEqualColumns($tableColumns[$key], $configColumn))
+			{
+				$sql = $this->getAdapter()
+				            ->alterTable(
+				                $tableName,
+								$tableColumns[$key]['Field'],
+								$configColumn->alterTable()
+				);
+
+				$this->getWpdb()->query($sql);
 			}
 
+			if($key >= 0){
+				unset($existing_columns[$key]);
+			}
 		}
+
+		// drop all other columns
+		foreach ( $existing_columns as $existing_column ) {
+			$this->getWpdb()->query(
+					$this->getAdapter()
+						->dropTableColumn($tableName, $existing_column['Field'])
+			);
+		}
+
 	}
 
 	/**
+	 * @param $name
+	 * @param $array
 	 *
+	 * @return int| null
+	 */
+	protected function findTableColumn($name, $array)
+	{
+		foreach ( $array as $key => $item ) {
+			if($item['Field'] == $name){
+				return $key;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 *Compare value from config and database
 	 *
 	 * @param $col1 array
 	 * @param $col2 AbstractColumn
 	 *
 	 * @return boolean
 	 */
-	protected function isCompareColumns($col1, $col2)
+	protected function isEqualColumns($col1, $col2)
 	{
+
 		if(strtoupper($col1['Type']) != strtoupper($col2->getColumnTypeLength())
-		|| ($col1['Null'] == 'YES') != $col2->getNullable()
-		|| ($col1['Default'] == 'YES') != $col2->getDefault()){
+		|| ($col1['Null'] == 'YES') != $col2->isNullable()
+		|| $col1['Default'] != $col2->getDefault()){
 			return false;
 		}
+
 		return true;
 	}
 
 	/**
 	 * @param $id
 	 * @param $columns
+	 * @param $table
 	 *
 	 * @return array|null|object
 	 */
@@ -185,11 +227,13 @@ class Pdo {
 	{
 
 		$col = $this->findPrimaryColumn($columns);
+
 		if(!is_null($col)){
-			return $this->getWpdb()->get_row(
-							$this->getAdapter()->select([
-							$col => $id
-						], $table), ARRAY_A);
+			$result = $this->getWpdb()->get_row(
+				$this->getAdapter()->select([
+					$col => $id
+				], $table), ARRAY_A);
+			return $result ? $result : [];
 		}
 
 		return [];
@@ -211,5 +255,32 @@ class Pdo {
 		}
 
 		return null;
+	}
+
+	/**
+	 *
+	 * Save all data to db
+	 *
+	 * @param array $data
+	 * @param $table
+	 *
+	 * @return $this
+	 * @throws \Exception
+	 */
+	public function save($data = [], $table)
+	{
+		if(is_array($data))
+		{
+			$result = $this->getWpdb()->replace(
+				$table,
+				$data
+			);
+
+			if($result === false)
+			{
+				throw new \Exception('Something went wrong!' . PHP_EOL . $this->getWpdb()->last_error);
+			}
+		}
+		return $this;
 	}
 }

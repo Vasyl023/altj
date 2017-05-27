@@ -29,14 +29,46 @@ abstract class AbstractDbModel extends AltObject {
 
 	/**
 	 * Get data for saving
-	 *
 	 * @return array
+	 * @throws \Exception
 	 */
 	public function getDbData()
 	{
+		$names = $this->getResources()->getColumnsName();
+		$result = [];
+		foreach ( $names as $property ) {
+			if(property_exists($this, $property))
+			{
+				$result[$property] = $this->{$property};
+			}else{
+				throw new \Exception('You have not migrated DB');
+			}
+		}
+
+		return $result;
 
 	}
 
+	/**
+	 *
+	 *
+	 * @param array $values
+	 *
+	 * @return $this
+	 */
+	public function putData($values = [])
+	{
+		foreach ( $values as $property => $value ) {
+			if(property_exists($this, $property))
+			{
+				$this->{$property} = $value;
+			}else{
+				$this->setData($property, $value);
+			}
+		}
+
+		return $this;
+	}
 
 	/**
 	 * we need to store resource of each model:

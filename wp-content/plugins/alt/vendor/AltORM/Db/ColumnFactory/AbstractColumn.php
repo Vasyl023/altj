@@ -73,9 +73,17 @@ class AbstractColumn
 	/**
 	 * @return boolean
 	 */
-	public function getNullable()
+	public function isNullable()
 	{
-		return $this->getParameters()['nullable'];
+		return $this->getParameters()['nullable'] === true;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isUnique()
+	{
+		return $this->getParameters()['unique'] === true;
 	}
 
 	/**
@@ -116,36 +124,40 @@ class AbstractColumn
 		return Validator::validator();
 	}
 
-
-
 	/**
 	 * Represent string with other optional params for column
 	 *
 	 *
-	 * @param array $parameters
 	 * @return string
 	 */
-	protected function getAdditionalSql($parameters = [])
+	protected function getAdditionalSql()
 	{
-		$nullable = '';
 
-		if(!$parameters['nullable']){
-			$nullable = ' NOT NULL ';
+		$parts = [];
+
+		if($this->isNullable()){
+			$parts[] = 'NOT NULL';
 		}
 
-		$default = '';
-		if(!is_null($parameters['default'])){
-			$default = sprintf(' DEFAULT %s', $parameters['default']);
+		if(!is_null($this->getDefault())){
+			$default = $this->getDefault();
+			if(is_int($this->getDefault())){
+				$parts[] = sprintf('DEFAULT %d', $default);
+			}else{
+				$parts[] = sprintf("DEFAULT '%s'", $default);
+			}
+
 		}
 
-		$unique = '';
-		if(!is_null($parameters['unique'])){
-			$unique = sprintf(' UNIQUE ');
+		if($this->isUnique()){
+			$parts[] = sprintf('UNIQUE');
 		}
 
-		$sql = $nullable . $default . $unique;
+		if($this->isPrimary()){
+			$parts[] = 'AUTO_INCREMENT';
+		}
 
-		return $sql;
+		return implode(' ', $parts);
 	}
 
 	/**
@@ -161,12 +173,11 @@ class AbstractColumn
 	 *
 	 * Prepare alter column code command for
 	 *
-	 * @param $parameters array
 	 * @return string
 	 */
-	public function alterTable($parameters = [])
+	public function alterTable()
 	{
-
+		return $this->getColumnSql();
 	}
 
 	/**
@@ -188,10 +199,8 @@ class AbstractColumn
 		return sprintf(
 			'%s %s',
 			$this->createColumn(),
-			$this->getAdditionalSql($this->getParameters())
+			$this->getAdditionalSql()
 		);
-
-
 	}
 
 	/**

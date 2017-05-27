@@ -12,7 +12,14 @@
 
 $obj = new \MesSys\Models\UserRepository();
 
+/** @var \MesSys\Models\User $user */
+$user = $obj->get(3);
 
-$obj->get(1);
+//$user->setAge(3424);
+//$user->setComment('Vasyl is the best');
+//
+//$obj->save($user);
 
-//print_r($obj);die();
+//print_r($user);
+//
+//die();

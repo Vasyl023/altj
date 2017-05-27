@@ -99,7 +99,7 @@ class Parser implements AnnotationInterface
 						self::PARSER_COLUMN_UNIQUE => $obj->unique,
 						self::PARSER_COLUMN_LENGTH => $obj->length,
 						self::PARSER_COLUMN_NULLABLE => $obj->nullable,
-						self::PARSER_COLUMN_NULLABLE => $obj->default
+						self::PARSER_COLUMN_DEFAULT => $obj->default
 					)
 			);
 		}

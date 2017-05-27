@@ -9,6 +9,7 @@ namespace AltORM\Core\Resource;
 
 use AltORM\AltORM;
 use AltORM\Core\AbstractDbModel;
+use AltORM\Core\Annotation\Parser;
 use AltORM\Core\Model\AltObject;
 use AltORM\Db\Pdo;
 
@@ -46,7 +47,7 @@ class ResourceDb extends AltObject
 	/**
 	 * @return mixed
 	 */
-	protected function getTable()
+	public function getTable()
 	{
 		return $this->getConfig()['table'];
 	}
@@ -54,16 +55,27 @@ class ResourceDb extends AltObject
 	/**
 	 * @return mixed
 	 */
-	protected function getColumns()
+	public function getColumns()
 	{
 		return $this->getConfig()['columns'];
+	}
+
+	public function getColumnsName()
+	{
+		$result = [];
+
+		foreach ( $this->getColumns() as $column ) {
+			$result[] = $column[Parser::PARSER_COLUMN_NAME];
+		}
+
+		return $result;
 	}
 
 	/**
 	 *
 	 * @return array
 	 */
-	protected function getConfig()
+	public function getConfig()
 	{
 		if(!$this->configs) {
 			$this->configs = AltORM::getConfig()->getConfigs( $this->entityCode );

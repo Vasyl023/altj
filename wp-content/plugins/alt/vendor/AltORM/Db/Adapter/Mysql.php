@@ -79,6 +79,41 @@ class Mysql implements Adapter
 	}
 
 	/**
+	 *
+	 * @param $table string
+	 * @param $columnSql string
+	 *
+	 * @return string
+	 */
+	public function alterTable($table, $columnName, $columnSql)
+	{
+		return sprintf('ALTER TABLE `%s` CHANGE COLUMN `%s` %s', $table, $columnName, $columnSql);
+	}
+
+	/**
+	 * @param $table
+	 * @param $columnSql
+	 *
+	 * @return string
+	 */
+	public function alterAddColumnToTable($table,  $columnSql)
+	{
+
+		return sprintf('ALTER TABLE `%s` ADD COLUMN `%s`', $table, $columnSql);
+	}
+
+	/**
+	 * @param $table
+	 * @param $columnName
+	 *
+	 * @return string
+	 */
+	public function dropTableColumn($table, $columnName){
+		return sprintf('ALTER TABLE `%s` DROP COLUMN `%s`', $table, $columnName);
+	}
+
+
+	/**
 	 * @param $parameters
 	 * @param $table
 	 * @param string $cols

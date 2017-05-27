@@ -46,4 +46,29 @@ interface Adapter
 	 */
 	public function select($parameters, $table, $cols = "*");
 
+	/**
+	 * @param $table
+	 * @param $columnName
+	 * @param $columnSql
+	 *
+	 * @return mixed
+	 */
+	public function alterTable($table, $columnName, $columnSql);
+
+	/**
+	 * @param $table
+	 * @param $columnName
+	 *
+	 * @return mixed
+	 */
+	public function dropTableColumn($table, $columnName);
+
+	/**
+	 * @param $table
+	 * @param $columnSql
+	 *
+	 * @return mixed
+	 */
+	public function alterAddColumnToTable($table,  $columnSql);
+
 }

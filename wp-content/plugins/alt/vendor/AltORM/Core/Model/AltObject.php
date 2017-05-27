@@ -60,27 +60,4 @@ class AltObject
 		return $this;
 	}
 
-	/**
-	 *
-	 * 
-	 * @param array $values
-	 *
-	 * @return $this
-	 */
-	public function putData($values = [])
-	{
-
-		foreach ( $values as $property => $value ) {
-			if(property_exists($this, $property))
-			{
-				$this->{$property} = $value;
-			}else{
-				$this->setData($property, $value);
-			}
-		}
-
-		return $this;
-	}
-
-
 }
