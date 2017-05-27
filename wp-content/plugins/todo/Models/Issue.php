@@ -6,7 +6,7 @@
  * Time: 9:05 PM
  */
 
-namespace MesSys\Models;
+namespace Todo\Models;
 
 use AltORM\Core\Annotations\Table;
 use AltORM\Core\Annotations\Column;
@@ -14,9 +14,9 @@ use AltORM\Core\AbstractDbModel;
 
 
 /**
- * @Table(name="user")
+ * @Table(name="issue")
  */
-class User extends AbstractDbModel
+class Issue extends AbstractDbModel
 {
 
 	/** @Column(name="int", primary=true, unique=true, nullable=false, length=11) */
@@ -28,23 +28,19 @@ class User extends AbstractDbModel
 	/** @Column(name="text", nullable=true) */
 	protected $comment;
 
-	/** @Column(name="float", nullable=false, default="10") */
-	protected $age;
-
 	/** @Column(name="float", nullable=false, default="10.1") */
 	protected $points;
 
+	protected $pointsRef;
+
 	/** @Column(name="datetime", nullable=false) */
 	protected $created_at;
-
-	/** @Column(name="int", nullable=false, default="0") */
-	protected $posts;
 
 	/**
 	 * User constructor.
 	 */
 	function __construct() {
-		parent::__construct('messys/User');
+		parent::__construct('todo/Issue');
 	}
 
 	/**
@@ -64,6 +60,20 @@ class User extends AbstractDbModel
 	/**
 	 * @return mixed
 	 */
+	public function getName() {
+		return $this->name;
+	}
+
+	/**
+	 * @param mixed $name
+	 */
+	public function setName( $name ) {
+		$this->name = $name;
+	}
+
+	/**
+	 * @return mixed
+	 */
 	public function getComment() {
 		return $this->comment;
 	}
@@ -73,20 +83,6 @@ class User extends AbstractDbModel
 	 */
 	public function setComment( $comment ) {
 		$this->comment = $comment;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAge() {
-		return $this->age;
-	}
-
-	/**
-	 * @param mixed $age
-	 */
-	public function setAge( $age ) {
-		$this->age = $age;
 	}
 
 	/**
@@ -116,36 +112,5 @@ class User extends AbstractDbModel
 	public function setCreatedAt( $created_at ) {
 		$this->created_at = $created_at;
 	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * @param mixed $name
-	 */
-	public function setName( $name ) {
-		$this->name = $name;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getPosts() {
-		return $this->posts;
-	}
-
-	/**
-	 * @param mixed $posts
-	 */
-	public function setPosts( $posts ) {
-		$this->posts = $posts;
-	}
-
-
-
 
 }

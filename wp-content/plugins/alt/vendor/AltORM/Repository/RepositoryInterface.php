@@ -8,14 +8,34 @@
 namespace AltORM\Repository;
 
 
+use AltORM\Core\AbstractDbModel;
+
 interface RepositoryInterface {
 
+	/**
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
 	public function get($id);
 
-	public function delete($id);
+	/**
+	 * @param AbstractDbModel $obj
+	 */
+	public function delete(AbstractDbModel $obj);
 
-	public function save(\AltORM\Core\Model\AltObject $obj);
+	/**
+	 * @param AbstractDbModel $obj
+	 *
+	 * @return mixed
+	 */
+	public function save(AbstractDbModel $obj);
 
+	/**
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
 	public function load($query);
 
 }

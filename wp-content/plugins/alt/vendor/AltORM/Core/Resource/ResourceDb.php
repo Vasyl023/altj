@@ -10,6 +10,7 @@ namespace AltORM\Core\Resource;
 use AltORM\AltORM;
 use AltORM\Core\AbstractDbModel;
 use AltORM\Core\Annotation\Parser;
+use AltORM\Core\Helper\Core;
 use AltORM\Core\Model\AltObject;
 use AltORM\Db\Pdo;
 
@@ -27,6 +28,9 @@ class ResourceDb extends AltObject
 	/** @var array  */
 	protected $configs = array();
 
+	/** @var Core */
+	protected $helper;
+
 	/**
 	 * ResourceDb constructor.
 	 *
@@ -34,6 +38,7 @@ class ResourceDb extends AltObject
 	 */
 	function __construct($entityCode)
 	{
+		$this->helper = new Core();
 		$this->entityCode = $entityCode;
 	}
 
@@ -99,18 +104,67 @@ class ResourceDb extends AltObject
 	}
 
 	/**
+	 * Save objects
 	 *
 	 * @param AbstractDbModel $obj
 	 *
 	 * @return AbstractDbModel
+	 * @throws \Exception
 	 */
 	public function save( AbstractDbModel $obj )
 	{
+		$columns = $this->getColumnsName();
 
-		$data = $obj->getDbData();
+		$data = [];
+
+		foreach ( $columns as $column ) {
+
+			$getter = $this->helper->getGetterMethodName($column);
+
+			if( property_exists($obj, $column)
+			   && method_exists($obj, $getter)){
+				$data[$column] = $obj->{$getter}();
+			}else{
+				throw new \Exception('There is something wrong with your getters or properties');
+			}
+
+		}
+
+		// remove identifier for new
+		if($obj->isNew()){
+			$col = $this->getPdo()->findPrimaryColumn($this->getColumns());
+			unset($data[$col]);
+		}
+
 		$this->getPdo()->save($data, $this->getTable());
 
 		return $obj;
 	}
 
+	/**
+	 *
+	 * @param AbstractDbModel $obj
+	 *
+	 * @throws \Exception
+	 */
+	public function delete($obj)
+	{
+		$col = $this->getPdo()->findPrimaryColumn($this->getColumns());
+
+		$getter = $this->helper->getGetterMethodName($col);
+
+		if(!is_null($col)
+			&& property_exists($obj, $col)
+			&& method_exists($obj, $getter)){
+
+			// get unique value
+			$id = $obj->{$getter}();
+
+			$this->getPdo()->deleteUnique($id, $this->getColumns(), $this->getTable());
+
+		}else{
+			throw new \Exception('There is something wrong with your getters or properties');
+		}
+
+	}
 }

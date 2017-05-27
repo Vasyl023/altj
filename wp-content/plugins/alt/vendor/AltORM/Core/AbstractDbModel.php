@@ -17,57 +17,30 @@ abstract class AbstractDbModel extends AltObject {
 	/** @var  ResourceDb */
 	private $_resource;
 
+	/** @var bool  */
+	protected $_isNew = true;
 	/**
 	 * AbstractModel constructor.
 	 *
 	 * @param $name
 	 */
-	function _construct($name)
+	function __construct($name)
 	{
 		$this->_resource = new ResourceDb($name);
 	}
 
 	/**
-	 * Get data for saving
-	 * @return array
-	 * @throws \Exception
+	 * @return bool
 	 */
-	public function getDbData()
-	{
-		$names = $this->getResources()->getColumnsName();
-		$result = [];
-		foreach ( $names as $property ) {
-			if(property_exists($this, $property))
-			{
-				$result[$property] = $this->{$property};
-			}else{
-				throw new \Exception('You have not migrated DB');
-			}
-		}
-
-		return $result;
-
+	public function isNew() {
+		return $this->_isNew;
 	}
 
 	/**
-	 *
-	 *
-	 * @param array $values
-	 *
-	 * @return $this
+	 * @param bool $isNew
 	 */
-	public function putData($values = [])
-	{
-		foreach ( $values as $property => $value ) {
-			if(property_exists($this, $property))
-			{
-				$this->{$property} = $value;
-			}else{
-				$this->setData($property, $value);
-			}
-		}
-
-		return $this;
+	public function setIsNew( $isNew ) {
+		$this->_isNew = $isNew;
 	}
 
 	/**

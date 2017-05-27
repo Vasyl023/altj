@@ -48,18 +48,23 @@ class AltORM {
 	 */
 	public function bootstrap()
 	{
+		// check cache
 		$this->_runMigration();
 	}
 
+	/**
+	 * Run all app migration.
+	 *
+	 */
 	private function _runMigration()
 	{
 		$configs = self::getConfig()->getConfigs();
-		$pdo = new Pdo();
 
-		foreach ( $configs as $name => $config ) {
-			$tableName = $config['table'];
-			$tableCols = $config['columns'];
-			$pdo->createTable($tableName, $tableCols);
+		$pdo = Pdo::getInstance();
+
+		foreach ( $configs as $name => $config )
+		{
+			$pdo->createTable($config['table'], $config['columns']);
 		}
 
 	}
@@ -83,10 +88,8 @@ class AltORM {
 			self::$_orm->bootstrap();
 		}
 
-//		print_r(self::$_config->getConfigs());die();
 		return self::$_orm;
 	}
-
 
 	/**
 	 * Preparing configs

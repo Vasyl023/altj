@@ -10,22 +10,24 @@ namespace AltORM\Repository;
 
 
 use AltORM\Core\AbstractDbModel;
+use AltORM\Core\Helper\Core;
 use AltORM\Core\Resource\ResourceDb;
 
 class AbstractRepository implements RepositoryInterface
 {
 	/**
-	 * @var
+	 * @var ResourceDb
 	 */
 	private $_resources;
 
+	/**
+	 * @var string
+	 */
 	protected $_entityId;
 
 	function __construct($name) {
 
 		$this->_entityId = $name;
-
-		$this->loadClass();
 
 	}
 
@@ -56,9 +58,9 @@ class AbstractRepository implements RepositoryInterface
 	}
 
 
-
 	/**
 	 * @param $id
+	 *
 	 * @return AbstractDbModel
 	 */
 	public function get($id)
@@ -67,23 +69,33 @@ class AbstractRepository implements RepositoryInterface
 
 		$obj = $this->mapDataToObject($objData);
 
+		$obj->setIsNew(count($objData) == 0);
+
 		return $obj;
 	}
 
 	/**
-	 * @param $id
-	 * @return boolean
+	 * @param AbstractDbModel $object
+	 *
+	 * @return void
 	 */
-	public function delete($id)
+	public function delete(AbstractDbModel $object)
 	{
+		$this->getResources()->delete($object);
 
 	}
 
-	public function save( \AltORM\Core\Model\AltObject $obj ) {
+	/**
+	 * Save all data
+	 * @param AbstractDbModel $obj
+	 *
+	 * @return AbstractDbModel
+	 */
+	public function save( AbstractDbModel $obj ) {
 
 		$objData = $this->getResources()->save($obj);
 
-		return $obj;
+		return $objData;
 	}
 
 	/**
@@ -94,17 +106,34 @@ class AbstractRepository implements RepositoryInterface
 		// TODO: Implement load() method.
 	}
 
+
 	/**
-	 * @param array
+	 * It`s dataBase mapping
+	 *
+	 * @param $data array
 	 *
 	 * @return AbstractDbModel
+	 * @throws \Exception
+	 *
 	 */
 	protected function mapDataToObject($data)
 	{
 		/** @var  $object */
 		$object = $this->loadClass();
 
-		$object->putData($data);
+		$helper = new Core();
+
+		foreach ( $data as $key => $value ) {
+			$setter = $helper->getSetterMethodName($key);
+
+			if( property_exists($object, $key)
+			    && method_exists($object, $setter)){
+				$object->{$setter}($value);
+			}else{
+				print_r($key);
+				throw new \Exception('There is something wrong with your setters or properties');
+			}
+		}
 
 		return $object;
 	}

@@ -35,7 +35,7 @@ class Core
 	}
 
 	/**
-	 * @param $plugin
+	 * @param $pluginClass
 	 *
 	 * @return string
 	 */
@@ -48,9 +48,52 @@ class Core
 		}
 
 		$finalPath = implode('\\', $array);
-//die($finalPath);
+
 		return $finalPath;
 
 	}
 
+	/**
+	 *
+	 * Convert property name to PSR-4 getter
+	 *
+	 * @param $property
+	 *
+	 * @return string
+	 */
+	public function getGetterMethodName($property)
+	{
+		$array = explode('_', $property);
+
+		if(count($array) > 1){
+			$result = '';
+			foreach ( $array as $item ) {
+				$result .= ucfirst($item);
+			}
+			$prop = $result;
+		}else{
+			$prop = ucfirst($property);
+		}
+
+		return 'get' . $prop;
+
+	}
+
+	public function getSetterMethodName($property)
+	{
+		$array = explode('_', $property);
+
+		if(count($array) > 1){
+			$result = '';
+			foreach ( $array as $item ) {
+				$result .= ucfirst($item);
+			}
+			$prop = $result;
+		}else{
+			$prop = ucfirst($property);
+		}
+
+		return 'set' . $prop;
+
+	}
 }

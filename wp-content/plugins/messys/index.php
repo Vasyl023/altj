@@ -15,11 +15,12 @@ $obj = new \MesSys\Models\UserRepository();
 /** @var \MesSys\Models\User $user */
 $user = $obj->get(3);
 
-//$user->setAge(3424);
+//$obj->delete($user);
+//$user->setIsNew(true);
 //$user->setComment('Vasyl is the best');
-//
+
 //$obj->save($user);
 
-//print_r($user);
-//
-//die();
+print_r($user);
+
+die();

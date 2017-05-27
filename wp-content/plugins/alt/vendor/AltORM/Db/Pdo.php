@@ -244,7 +244,7 @@ class Pdo {
 	 *
 	 * @return null|string
 	 */
-	protected function findPrimaryColumn($columns)
+	public function findPrimaryColumn($columns)
 	{
 		$cols = $this->prepareColumns($columns);
 
@@ -281,6 +281,29 @@ class Pdo {
 				throw new \Exception('Something went wrong!' . PHP_EOL . $this->getWpdb()->last_error);
 			}
 		}
-		return $this;
+	}
+
+	/**
+	 *
+	 * Delete unique value
+	 * @param $id
+	 * @param $columns
+	 * @param $table
+	 *
+	 * @return array|null|object
+	 */
+	public function deleteUnique($id, $columns, $table)
+	{
+
+		$col = $this->findPrimaryColumn($columns);
+
+		if(!is_null($col)){
+			$this->getWpdb()->delete(
+				$table,
+				[
+					$col => $id
+				]
+			);
+		}
 	}
 }

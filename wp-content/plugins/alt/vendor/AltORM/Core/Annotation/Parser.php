@@ -28,9 +28,7 @@ class Parser implements AnnotationInterface
 	public $_reader = null;
 
 	function __construct() {
-		$this->getAnnotationReader();
 	}
-
 
 	/**
 	 * @param $classFile
@@ -78,7 +76,7 @@ class Parser implements AnnotationInterface
 
 
 	/**
-	 * Get parameters with anotation
+	 * Get parameters with annotation
 	 *
 	 * @param $reflClass \ReflectionClass
 	 * @return array
@@ -87,21 +85,28 @@ class Parser implements AnnotationInterface
 	{
 		$props = $reflClass->getProperties();
 		$result = array();
+
 		foreach ( $props as $prop ) {
+
 			$array = $this->getAnnotationReader()->getPropertyAnnotations($prop);
 			$obj = $array[0];
 
-			$result[] = array(
-				self::PARSER_COLUMN_NAME => $prop->getName(),
-				self::PARSER_COLUMN_TYPE => $obj->name,
-				'params' => array(
-						self::PARSER_COLUMN_PRIMARY => $obj->primary,
-						self::PARSER_COLUMN_UNIQUE => $obj->unique,
-						self::PARSER_COLUMN_LENGTH => $obj->length,
-						self::PARSER_COLUMN_NULLABLE => $obj->nullable,
-						self::PARSER_COLUMN_DEFAULT => $obj->default
-					)
-			);
+			// leave opportunity for simple property to be created
+			if(isset($obj->name)){
+
+				$result[] = array(
+					self::PARSER_COLUMN_NAME => $prop->getName(),
+					self::PARSER_COLUMN_TYPE => $obj->name,
+					'params' => array(
+							self::PARSER_COLUMN_PRIMARY => $obj->primary,
+							self::PARSER_COLUMN_UNIQUE => $obj->unique,
+							self::PARSER_COLUMN_LENGTH => $obj->length,
+							self::PARSER_COLUMN_NULLABLE => $obj->nullable,
+							self::PARSER_COLUMN_DEFAULT => $obj->default
+						)
+				);
+
+			}
 		}
 
 		return array('columns' => $result);
