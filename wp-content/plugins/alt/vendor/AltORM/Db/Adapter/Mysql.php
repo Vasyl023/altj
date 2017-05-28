@@ -125,6 +125,9 @@ class Mysql implements Adapter
 		return "SELECT $cols FROM `$table` WHERE " . $this->bindParameters($parameters, $table);
 	}
 
+
+
+
 	/**
 	 * @param $parameters
 	 *
@@ -150,5 +153,15 @@ class Mysql implements Adapter
 		$sql = implode(' AND ', $result);
 
 		return $sql;
+	}
+
+
+	public function getOperationMapper()
+	{
+		return [
+			'eq'    => '=',
+			'neq'   => '!=',
+			'like'  => 'LIKE'
+		];
 	}
 }

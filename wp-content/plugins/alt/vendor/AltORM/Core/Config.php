@@ -32,6 +32,11 @@ class Config implements ConfigInterface
 	/** @var bool  */
 	private $_isFoldersParsed = false;
 
+	/** @var bool  */
+	private $_isConfigsLoaded = false;
+
+	/** @var bool  */
+	private $_isCached = false;
 
 	/** @var  array */
 	protected $_configs;
@@ -66,6 +71,7 @@ class Config implements ConfigInterface
 	 */
 	public function cleanCache()
 	{
+		die();
 		add_option(self::WP_OPTION_NAME, '');
 	}
 
@@ -187,7 +193,6 @@ class Config implements ConfigInterface
 	 * @param $array
 	 * @param string $name
 	 *
-	 * @return mixed|void
 	 * @throws \Exception
 	 */
 	public function addConfig($array, $name = '')

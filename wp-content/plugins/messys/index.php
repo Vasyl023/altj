@@ -15,9 +15,9 @@ $obj = new \MesSys\Models\UserRepository();
 /** @var \MesSys\Models\User $user */
 $user = $obj->get(3);
 
-//$obj->delete($user);
-//$user->setIsNew(true);
-//$user->setComment('Vasyl is the best');
+$user->setIsNew(true);
+$user->setComment('ALtORM is the best');
+$user->setAge(30);
 
-//$obj->save($user);
+$obj->save($user);
 

@@ -16,7 +16,6 @@ function orm_configuration()
 	if(isset($_GET['clean-cache']) && $_GET['clean-cache'] == 1){
 		add_option(\AltORM\AltORM::getConfig()->cleanCache(), '');
 	}
-	global $wp;
 	echo '<h1>ORM Configuration</h1>';
 	echo '<div class="wrap">';
 	echo '<p>Please be careful with ORM configuration it has a big influence on DB.</p>';

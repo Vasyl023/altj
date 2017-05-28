@@ -2,7 +2,6 @@ db:
   prefix: alt
 
 class:
-#  folder: models
   repos:
     - UserRepository
     - CommentRepository

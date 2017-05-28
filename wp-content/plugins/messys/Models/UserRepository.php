@@ -27,6 +27,5 @@ class UserRepository extends \AltORM\Repository\AbstractRepository
 	 */
 	public function load( $query )
 	{
-		// TODO: Implement load() method.
 	}
 }
