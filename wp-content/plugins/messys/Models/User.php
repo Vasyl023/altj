@@ -145,7 +145,4 @@ class User extends AbstractDbModel
 		$this->posts = $posts;
 	}
 
-
-
-
 }
