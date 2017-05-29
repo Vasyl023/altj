@@ -32,7 +32,7 @@ interface RepositoryInterface {
 	public function save(AbstractDbModel $obj);
 
 	/**
-	 * @param $query
+	 * @param $query array
 	 *
 	 * @return mixed
 	 */

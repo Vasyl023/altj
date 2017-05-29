@@ -103,7 +103,17 @@ class AbstractRepository implements RepositoryInterface
 	 * @return array
 	 */
 	public function load( $query ) {
-		// TODO: Implement load() method.
+
+		$objDatas = $this->getResources()->load($query);
+
+		$results = [];
+		foreach ( $objDatas as $obj_data ) {
+			$obj = $this->mapDataToObject($obj_data);
+			$results[] = $obj;
+		}
+
+		return $results;
+
 	}
 
 

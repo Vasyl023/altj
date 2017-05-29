@@ -104,6 +104,21 @@ class ResourceDb extends AltObject
 	}
 
 	/**
+	 * @param $query
+	 *
+	 * @return array
+	 */
+	public function load($query)
+	{
+
+		$result = $this->getPdo()->selectCollection($query, $this->getTable());
+
+		return $result;
+
+	}
+
+
+	/**
 	 * Save objects
 	 *
 	 * @param AbstractDbModel $obj

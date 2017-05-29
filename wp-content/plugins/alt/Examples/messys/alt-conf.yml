@@ -1,0 +1,10 @@
+db:
+  prefix: alt
+
+class:
+  repos:
+    - UserRepository
+    - CommentRepository
+  classes:
+    - User
+    - Comment

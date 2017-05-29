@@ -284,6 +284,22 @@ class Pdo {
 	}
 
 	/**
+	 * @param array $parameters
+	 * @param $table
+	 *
+	 * @return array
+	 */
+	public function selectCollection($parameters = [], $table)
+	{
+		$result = $this->getWpdb()->get_results(
+			$this->getAdapter()->selectWithAttributes($table,
+				$parameters
+			), ARRAY_A);
+
+		return $result ? $result : [];
+
+	}
+	/**
 	 *
 	 * Delete unique value
 	 * @param $id

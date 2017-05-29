@@ -71,4 +71,13 @@ interface Adapter
 	 */
 	public function alterAddColumnToTable($table,  $columnSql);
 
+	/**
+	 * @param $table
+	 * @param $parameters
+	 * @param string $cols
+	 *
+	 * @return mixed
+	 */
+	public function selectWithAttributes($table, $parameters, $cols = '*');
+
 }

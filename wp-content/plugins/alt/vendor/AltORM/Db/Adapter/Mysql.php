@@ -156,12 +156,80 @@ class Mysql implements Adapter
 	}
 
 
+	/**
+	 * Parameters, as in example
+	 *
+	 * @param $table
+	 * @param $parameters
+	 *
+	 * @param string $cols
+	 *
+	 * @return string
+	 */
+	public function selectWithAttributes($table, $parameters, $cols = '*')
+	{
+		return "SELECT $cols FROM `$table` WHERE " . $this->bindLoadParameters($parameters, $table);
+	}
+
+	/**
+	 * @param $parameters
+	 *
+	 * @param $table
+	 *
+	 * @return string
+	 */
+	protected function bindLoadParameters($parameters, $table)
+	{
+		$result = [];
+
+		$parametersSQL = $this->getOperationMapper();
+
+		foreach ( $parameters as $key => $value ) {
+
+			$operation = $parametersSQL[$key];
+
+			$concatanator = isset($value['concat']) ? $value['concat'] : 'AND';
+			$column = $value['column'];
+			$value = $value['value'];
+
+			if(!is_int($value)){
+				if($operation == 'in'){
+					$tmp = $this->escape(sprintf("`$table`.`%s` $operation (%s)", $column, $value));
+				}else{
+					$tmp = $this->escape(sprintf("`$table`.`%s` $operation '%s'", $column, $value));
+				}
+
+			}else{
+				$tmp = $this->escape(sprintf("`$table`.`%s` $operation %d", $column,  $value));
+			}
+
+			$result[$concatanator][] = $tmp;
+
+		}
+
+		$sqls = [];
+		if(count($result['AND']) > 0){
+			$sqls[] = implode(' AND ', $result['AND']);
+		}
+
+		if(count($result['OR']) > 0){
+			$sqls[] = implode(' OR ', $result['OR']);
+		}
+//		var_dump($result);
+
+		$sql = implode(' AND ', $sqls);
+		return $sql;
+	}
+
+
+
 	public function getOperationMapper()
 	{
 		return [
 			'eq'    => '=',
 			'neq'   => '!=',
-			'like'  => 'LIKE'
+			'like'  => 'LIKE',
+			'in'    => 'IN'
 		];
 	}
 }
