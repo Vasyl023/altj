@@ -193,7 +193,7 @@ class AnnotationReader implements Reader
             }
         }
 
-        AnnotationRegistry::registerFile(__DIR__ . '/Annotation/IgnoreAnnotation.php');
+        AnnotationRegistry::registerFile( __DIR__ . '/Annotation/IgnoreAnnotation.php' );
 
         $this->parser = $parser ?: new DocParser();
 

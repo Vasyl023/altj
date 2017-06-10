@@ -1,0 +1,8 @@
+db:
+  prefix: alt
+
+class:
+  repos:
+    - QuestionRepository
+  classes:
+    - Question

@@ -14,7 +14,11 @@ function orm_configuration()
 	}
 
 	if(isset($_GET['clean-cache']) && $_GET['clean-cache'] == 1){
-		add_option(\AltORM\AltORM::getConfig()->cleanCache(), '');
+		\AltORM\AltORM::getConfig()->cleanCache();
+		echo '<h1>ORM Configuration</h1>';
+		echo 'Cache cleaned.';
+		echo 'Please navigate to website';
+		return;
 	}
 	echo '<h1>ORM Configuration</h1>';
 	echo '<div class="wrap">';

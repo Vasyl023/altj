@@ -10,7 +10,7 @@
  */
 
 
-$obj = new \MesSys\Models\UserRepository();
+$obj = new \MesSys\Models\QuestionRepository();
 
 $result = $obj->load(
 	[

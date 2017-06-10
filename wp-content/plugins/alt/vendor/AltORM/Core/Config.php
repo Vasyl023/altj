@@ -11,7 +11,6 @@ namespace AltORM\Core;
 use AltORM\Core\Annotation\Parser;
 use AltORM\Core\Annotation;
 use AltORM\Core\Annotation\AnnotationInterface;
-use AltORM\Core\Helper\Core as Helper;
 use AltORM\Core\Config\ConfigInterface;
 use AltORM\Core\Helper\Core;
 use Symfony\Component\Yaml\Yaml;
@@ -71,8 +70,7 @@ class Config implements ConfigInterface
 	 */
 	public function cleanCache()
 	{
-		die();
-		add_option(self::WP_OPTION_NAME, '');
+		update_option(self::WP_OPTION_NAME, '');
 	}
 
 	/**

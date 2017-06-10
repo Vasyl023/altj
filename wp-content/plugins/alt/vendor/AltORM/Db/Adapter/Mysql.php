@@ -215,7 +215,6 @@ class Mysql implements Adapter
 		if(count($result['OR']) > 0){
 			$sqls[] = implode(' OR ', $result['OR']);
 		}
-//		var_dump($result);
 
 		$sql = implode(' AND ', $sqls);
 		return $sql;

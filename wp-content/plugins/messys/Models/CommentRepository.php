@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Models;
+namespace MesSys\Models;
 
 /**
  * Created by PhpStorm.
@@ -8,7 +8,7 @@ namespace Todo\Models;
  * Date: 5/26/17
  * Time: 12:00 AM
  */
-class IssueRepository extends \AltORM\Repository\AbstractRepository
+class CommentRepository extends \AltORM\Repository\AbstractRepository
 	implements \AltORM\Repository\RepositoryInterface
 {
 
@@ -17,7 +17,7 @@ class IssueRepository extends \AltORM\Repository\AbstractRepository
 	 */
 	function __construct()
 	{
-		parent::__construct('todo/Issue');
+		parent::__construct('messys/Comment');
 	}
 
 }

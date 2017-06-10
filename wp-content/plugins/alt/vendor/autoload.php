@@ -9,9 +9,7 @@
 /** It`s a root of vendor */
 define('BP', __DIR__);
 
-require_once 'vendor/autoload.php';
-
-
+//require_once 'vendor/autoload.php';
 
 /**
  * Loading all classes

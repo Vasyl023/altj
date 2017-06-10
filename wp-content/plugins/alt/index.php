@@ -10,9 +10,10 @@
  */
 //loading our core files
 
-require_once __DIR__. '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 require_once ABSPATH . DIRECTORY_SEPARATOR . 'wp-admin/includes/plugin.php';
-require_once __DIR__. '/views/init-admin.php';
+require_once __DIR__ . '/views/init-admin.php';
 
 \AltORM\AltORM::orm();
 

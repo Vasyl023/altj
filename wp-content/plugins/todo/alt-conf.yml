@@ -1,8 +1,0 @@
-db:
-  prefix: altj
-
-class:
-  repos:
-    - IssueRepository
-  classes:
-    - Issue

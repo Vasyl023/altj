@@ -30,6 +30,9 @@ class TextColumn extends AbstractColumn
 		return "";
 	}
 
+	public function getDefault() {
+		return null;
+	}
 
 	/**
 	 * Creating data
