@@ -28,7 +28,7 @@ class Question extends AbstractDbModel
 	/** @Column(name="text", nullable=true) */
 	protected $question;
 
-	/** @Column(name="text", default="0") */
+	/** @Column(name="text", default="") */
 	protected $answer;
 
 	/** @Column(name="int", nullable=false, default="0") */

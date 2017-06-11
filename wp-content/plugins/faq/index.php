@@ -9,4 +9,6 @@
  * License: GPL2
  */
 
+// init frontend parts
 require_once __DIR__ . DIRECTORY_SEPARATOR .  'views' . DIRECTORY_SEPARATOR . 'frontend-view.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR .  'views' . DIRECTORY_SEPARATOR . 'admin-view.php';

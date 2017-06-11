@@ -168,7 +168,11 @@ class Mysql implements Adapter
 	 */
 	public function selectWithAttributes($table, $parameters, $cols = '*')
 	{
-		return "SELECT $cols FROM `$table` WHERE " . $this->bindLoadParameters($parameters, $table);
+		if(is_array($parameters) && !empty($parameters)){
+			return "SELECT $cols FROM `$table` WHERE " . $this->bindLoadParameters($parameters, $table);
+		}else{
+			return "SELECT $cols FROM `$table`";
+		}
 	}
 
 	/**

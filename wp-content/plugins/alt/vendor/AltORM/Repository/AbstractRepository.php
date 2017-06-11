@@ -102,7 +102,7 @@ class AbstractRepository implements RepositoryInterface
 	 * @param $query
 	 * @return array
 	 */
-	public function load( $query ) {
+	public function load( $query = array()) {
 
 		$objDatas = $this->getResources()->load($query);
 
